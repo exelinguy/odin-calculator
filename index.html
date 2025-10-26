@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Doto:wght,ROND@800,100&family=Kanit:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <title>Odin Calculator</title>
+  </head>
+  <body>
+    <div id="calculator">
+      <input type="text" id="display" value="0" readonly />
+
+      <div class="button-row">
+        <button id="clear">AC</button>
+        <button id="backspace">←</button>
+        <button id="decimal">.</button>
+        <button class="operator">=</button>
+      </div>
+      <div class="button-row">
+        <button class="digit">7</button>
+        <button class="digit">8</button>
+        <button class="digit">9</button>
+        <button class="operator">/</button>
+      </div>
+      <div class="button-row">
+        <button class="digit">4</button>
+        <button class="digit">5</button>
+        <button class="digit">6</button>
+        <button class="operator">x</button>
+      </div>
+      <div class="button-row">
+        <button class="digit">1</button>
+        <button class="digit">2</button>
+        <button class="digit">3</button>
+        <button class="operator">+</button>
+      </div>
+      <div class="button-row">
+        <button class="digit" id="zero">0</button>
+        <button class="digit">00</button>
+        <button class="operator">-</button>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
