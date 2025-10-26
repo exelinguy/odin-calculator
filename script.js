@@ -24,7 +24,7 @@ function operate(operator, a, b) {
       return Number(add(a, b).toFixed(4));
     case "-":
       return Number(subtract(a, b).toFixed(4));
-    case "x":
+    case "*":
       return Number(multiply(a, b).toFixed(4));
     case "/":
       return divide(a, b);
@@ -34,6 +34,8 @@ function operate(operator, a, b) {
 }
 
 // Variables to store calculator state
+const displaySymbols = { "*": "x", "/": "÷", "-": "−", "+": "+" };
+const logicSymbols = { x: "*", "÷": "/", "−": "-", "+": "+" };
 let firstNumber = "";
 let operator = "";
 let secondNumber = "";
@@ -52,10 +54,12 @@ const clearButton = document.getElementById("clear");
 function updateDisplay() {
   if (firstNumber && operator && secondNumber) {
     // Show: "5+3"
-    display.value = `${firstNumber}${operator}${secondNumber}`;
+    display.value = `${firstNumber}${
+      displaySymbols[operator] || operator
+    }${secondNumber}`;
   } else if (firstNumber && operator) {
     // Show: "5+"
-    display.value = `${firstNumber}${operator}`;
+    display.value = `${firstNumber}${displaySymbols[operator] || operator}`;
   } else if (currentInput) {
     // Show current input
     display.value = currentInput;
@@ -123,7 +127,8 @@ decimalButton.addEventListener("click", () => {
 // Operator button click handlers
 operatorButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    const selectedOperator = button.textContent;
+    let selectedOperator = button.textContent;
+    if (selectedOperator === "x") selectedOperator = "*";
 
     if (selectedOperator === "=") {
       // Perform calculation if we have both numbers
@@ -156,7 +161,7 @@ operatorButtons.forEach((button) => {
       }
 
       if (firstNumber) {
-        operator = selectedOperator;
+        operator = logicSymbols[selectedOperator] || selectedOperator;
         currentInput = "";
         updateDisplay();
       }
@@ -201,3 +206,58 @@ clearButton.addEventListener("click", () => {
 currentInput = "0";
 firstNumber = "0";
 updateDisplay();
+
+// Keyboard input support
+window.addEventListener("keydown", (event) => {
+  const key = event.key;
+
+  // Allow digits
+  if (key >= "0" && key <= "9") {
+    const button = Array.from(digitButtons).find(
+      (btn) => btn.textContent === key
+    );
+    if (button) button.click();
+  }
+
+  // Allow operators: + - /
+  if (["+", "-", "/"].includes(key)) {
+    const button = Array.from(operatorButtons).find(
+      (btn) => btn.textContent === key
+    );
+    if (button) button.click();
+  }
+
+  // Match keyboard multiplication keys
+  if (key === "*" || key.toLowerCase() === "x") {
+    const multiplyButton = Array.from(operatorButtons).find(
+      (btn) => btn.textContent === "x"
+    );
+    if (multiplyButton) multiplyButton.click();
+  }
+
+  // Equals: Enter or =
+  if (key === "=" || key === "Enter") {
+    const equalsButton = Array.from(operatorButtons).find(
+      (btn) => btn.textContent === "="
+    );
+    if (equalsButton) equalsButton.click();
+  }
+
+  // Decimal key
+  if (key === ".") {
+    decimalButton.click();
+  }
+
+  // Backspace key
+  if (key === "Backspace") {
+    backspaceButton.click();
+  }
+
+  // Clear key (Escape)
+  if (key === "Escape" || key.toLowerCase() === "AC") {
+    clearButton.click();
+  }
+
+  // Prevent page scroll / form submission when pressing space or Enter
+  event.preventDefault();
+});
